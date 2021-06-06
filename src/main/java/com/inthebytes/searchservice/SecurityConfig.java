@@ -13,6 +13,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity security) throws Exception
     {
         security.httpBasic().disable()
-            .csrf().disable(); // TODO: REMOVE ON PROD
+            .csrf().disable() // TODO: REMOVE ON PROD
+            .cors();
     }
 }

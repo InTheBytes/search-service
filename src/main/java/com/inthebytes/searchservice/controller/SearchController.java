@@ -24,9 +24,6 @@ import com.inthebytes.searchservice.dto.RestaurantDTO;
 import com.inthebytes.searchservice.service.SearchService;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000",
-		"http://stacklunch.com", "http://admin.stacklunch.com", 
-		"http://driver.stacklunch.com", "http://manager.stacklunch.com"})
 @RequestMapping("/search")
 public class SearchController {
 
