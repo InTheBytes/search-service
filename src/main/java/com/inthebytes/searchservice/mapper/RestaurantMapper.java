@@ -17,6 +17,7 @@ public class RestaurantMapper {
 	
 	public RestaurantDTO convert(Restaurant entity) {
 		RestaurantDTO dto = new RestaurantDTO(
+				entity.getRestaurantId(),
 				entity.getName(), 
 				entity.getCuisine(), 
 				convert(entity.getLocation()));

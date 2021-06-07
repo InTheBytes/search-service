@@ -52,13 +52,13 @@ public class RestaurantFilterControllerTest {
 		List<FoodDTO> foods = new ArrayList<FoodDTO>();
 		foods.add(new FoodDTO("foodUUID-placeholder", "Food", 1.00, "It's food"));
 
-		RestaurantDTO rest1 = new RestaurantDTO("My Burgers", "Fast Food", location);
+		RestaurantDTO rest1 = new RestaurantDTO("restaurantUUID-placeholder", "My Burgers", "Fast Food", location);
 		rest1.setFoods(foods);
-		RestaurantDTO rest2 = new RestaurantDTO("My Bistro", "French", location);
+		RestaurantDTO rest2 = new RestaurantDTO("restaurantUUID-placeholder", "My Bistro", "French", location);
 		rest2.setFoods(foods);
-		RestaurantDTO rest3 = new RestaurantDTO("My Pizza", "Pizza", location);
+		RestaurantDTO rest3 = new RestaurantDTO("restaurantUUID-placeholder", "My Pizza", "Pizza", location);
 		rest3.setFoods(foods);
-		RestaurantDTO rest4 = new RestaurantDTO("My Diner", "Pizza", location);
+		RestaurantDTO rest4 = new RestaurantDTO("restaurantUUID-placeholder", "My Diner", "Pizza", location);
 		rest4.setFoods(foods);
 
 		results.add(rest1);

@@ -14,8 +14,9 @@ import com.inthebytes.searchservice.entity.Food;
 
 public class RestaurantDTO {
 	
-	public RestaurantDTO(String name, String cuisine, LocationDTO location) {
+	public RestaurantDTO(String restaurantId, String name, String cuisine, LocationDTO location) {
 		super();
+		this.restaurantId = restaurantId;
 		this.name = name;
 		this.cuisine = cuisine;
 		this.location = location;
@@ -23,7 +24,6 @@ public class RestaurantDTO {
 
 	@Id
 	@Nullable
-	@JsonIgnore
 	private String restaurantId;
 
 	@NonNull
