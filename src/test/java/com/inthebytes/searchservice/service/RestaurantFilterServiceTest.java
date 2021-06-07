@@ -338,7 +338,7 @@ public class RestaurantFilterServiceTest {
 	}
 
 	private FoodDTO makeFoodDTO(String name, Double price) {
-		FoodDTO food = new FoodDTO(name, price, "Placeholder food");
+		FoodDTO food = new FoodDTO("foodUUID-placeholder", name, price, "Placeholder food");
 		return food;
 	}
 }

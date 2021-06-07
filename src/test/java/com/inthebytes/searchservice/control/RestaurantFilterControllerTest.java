@@ -50,7 +50,7 @@ public class RestaurantFilterControllerTest {
 	public void setUp() {
 		LocationDTO location = new LocationDTO("123", "Main", "Sacramento", "CA", 11111);
 		List<FoodDTO> foods = new ArrayList<FoodDTO>();
-		foods.add(new FoodDTO("Food", 1.00, "It's food"));
+		foods.add(new FoodDTO("foodUUID-placeholder", "Food", 1.00, "It's food"));
 
 		RestaurantDTO rest1 = new RestaurantDTO("My Burgers", "Fast Food", location);
 		rest1.setFoods(foods);

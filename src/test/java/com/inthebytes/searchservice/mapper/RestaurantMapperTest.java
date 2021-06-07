@@ -56,7 +56,7 @@ public class RestaurantMapperTest {
 		LocationDTO location = new LocationDTO("Main St.", "123", "Sacramento", "California", 11111);
 		RestaurantDTO test = new RestaurantDTO("Lexi's Burgers", "Fast Food", location);
 		
-		FoodDTO food = new FoodDTO("Hamburger", 4.99, "A burger");
+		FoodDTO food = new FoodDTO("foodUUID-placeholder", "Hamburger", 4.99, "A burger");
 		List<FoodDTO> foods = new ArrayList<FoodDTO>();
 		foods.add(food);
 		test.setFoods(foods);

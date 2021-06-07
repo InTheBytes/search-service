@@ -51,6 +51,7 @@ public class RestaurantMapper {
 	
 	public FoodDTO convert(Food entity) {
 		FoodDTO dto = new FoodDTO(
+				entity.getFoodId(),
 				entity.getName(), 
 				entity.getPrice(), 
 				entity.getDescription());

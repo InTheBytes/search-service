@@ -13,4 +13,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 @Repository
 public interface FoodDao extends JpaRepository<Food, String>, JpaSpecificationExecutor<Food> {
 	Page<Food> findByNameContaining(String query, Pageable pageable);
+	Food findByFoodId(String foodId);
 }

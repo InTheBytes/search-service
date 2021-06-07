@@ -8,8 +8,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class FoodDTO {
 	
-	public FoodDTO(String name, Double price, String description) {
+	public FoodDTO(String foodId, String name, Double price, String description) {
 		super();
+		this.foodId = foodId;
 		this.name = name;
 		this.price = price;
 		this.description = description;
@@ -17,7 +18,6 @@ public class FoodDTO {
 
 	@Id
 	@Nullable
-	@JsonIgnore
 	private String foodId;
 
 	@NonNull
