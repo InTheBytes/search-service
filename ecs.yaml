@@ -116,7 +116,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       HealthCheckIntervalSeconds: 180
-      HealthCheckPath: '/user?page-size=1&page=1'
+      HealthCheckPath: '/actuator/health'
       HealthCheckTimeoutSeconds: 30
       HealthCheckPort: '8080'
       UnhealthyThresholdCount: 2
@@ -140,6 +140,7 @@ Resources:
             - /search/*
             - /filter*
             - /filter/*
+            - /v3/api-docs/searchservice
       Actions:
         - Type: forward
           TargetGroupArn: !Ref TargetGroup

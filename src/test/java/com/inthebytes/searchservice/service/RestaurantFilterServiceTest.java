@@ -292,7 +292,7 @@ public class RestaurantFilterServiceTest {
 	}
 	
 	private RestaurantDTO fastFoodDTO() {
-		RestaurantDTO cheapFast = new RestaurantDTO("Burgers", "Fast Food", makeLocationDTO());
+		RestaurantDTO cheapFast = new RestaurantDTO("restaurantUUID-placeholder", "Burgers", "Fast Food", makeLocationDTO());
 		cheapFast.setRestaurantId("1");
 		List<FoodDTO> cheapFastFood = new ArrayList<FoodDTO>();
 		cheapFastFood.add(makeFoodDTO("Burger", 3.59));
@@ -304,7 +304,7 @@ public class RestaurantFilterServiceTest {
 	}
 
 	private RestaurantDTO dinerDTO() {
-		RestaurantDTO cheapDiner = new RestaurantDTO("My Diner", "Diner", makeLocationDTO());
+		RestaurantDTO cheapDiner = new RestaurantDTO("restaurantUUID-placeholder", "My Diner", "Diner", makeLocationDTO());
 		cheapDiner.setRestaurantId("2");
 		List<FoodDTO> cheapDinerFood = new ArrayList<FoodDTO>();
 		cheapDinerFood.add(makeFoodDTO("Grand Slam", 8.20));
@@ -320,7 +320,7 @@ public class RestaurantFilterServiceTest {
 	}
 
 	private RestaurantDTO expensiveDTO() {
-		RestaurantDTO expensiveDiner = new RestaurantDTO("Someone else's Diner", "Diner", makeLocationDTO());
+		RestaurantDTO expensiveDiner = new RestaurantDTO("restaurantUUID-placeholder", "Someone else's Diner", "Diner", makeLocationDTO());
 		expensiveDiner.setRestaurantId("3");
 		expensiveDiner.getLocation().setCity("San Francisco");
 		expensiveDiner.getLocation().setZipCode(22222);
@@ -338,7 +338,7 @@ public class RestaurantFilterServiceTest {
 	}
 
 	private FoodDTO makeFoodDTO(String name, Double price) {
-		FoodDTO food = new FoodDTO(name, price, "Placeholder food");
+		FoodDTO food = new FoodDTO("foodUUID-placeholder", name, price, "Placeholder food");
 		return food;
 	}
 }

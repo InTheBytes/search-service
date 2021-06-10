@@ -2,8 +2,10 @@ package com.inthebytes.searchservice.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,12 +31,16 @@ public class SearchService {
 	
 	@Autowired
 	RestaurantMapper mapper;
-	
+
 	public Page<FoodDTO> foodSearch(String query, String sort, String[] filter, Boolean ascending, Integer pageNumber) throws SQLException {
 		return foodRepo.findByNameContaining(query, PageRequest.of(pageNumber, 10, Sort.by((ascending)? Sort.Direction.ASC : Sort.Direction.DESC, sort)))
 				.map((x) -> mapper.convert(x));
 	}
-	
+
+	public FoodDTO foodById(String foodId) throws SQLException {
+		return mapper.convert(foodRepo.findByFoodId(foodId));
+	}
+
 	public Page<RestaurantDTO> restaurantSearch(String query, String sort, String[] filter, Boolean ascending, Integer pageNumber) throws SQLException {
 		return restaurantRepo.findByNameContaining(query, PageRequest.of(pageNumber, 10, Sort.by((ascending)? Sort.Direction.ASC : Sort.Direction.DESC, sort)))
 				.map((x) -> mapper.convert(x));
