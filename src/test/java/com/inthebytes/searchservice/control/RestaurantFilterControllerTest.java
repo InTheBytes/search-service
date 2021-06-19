@@ -35,7 +35,7 @@ import com.inthebytes.searchservice.service.RestaurantFilterService;
 @TestInstance(Lifecycle.PER_CLASS)
 public class RestaurantFilterControllerTest {
 	
-	private String endpoint = "/filter/restaurants";
+	private String endpoint = "/filter/restaurant";
 
 	@MockBean
 	RestaurantFilterService service;
