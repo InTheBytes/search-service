@@ -23,7 +23,7 @@ import com.inthebytes.searchservice.dto.RestaurantDTO;
 import com.inthebytes.searchservice.service.RestaurantFilterService;
 
 @RestController
-@RequestMapping("/filter/restaurants")
+@RequestMapping("/filter")
 @Tag(name = "search", description = "The search API")
 public class RestaurantFilterController {
 	
@@ -38,7 +38,7 @@ public class RestaurantFilterController {
 			}),
 			@ApiResponse(responseCode = "204", description = "Request has invalid parameters", content = @Content)
 	})
-	@GetMapping(value="")
+	@GetMapping(value="/restaurant")
 	public ResponseEntity<List<RestaurantDTO>> filter(
 			@RequestParam(value = "zip-code", required = false, defaultValue = "0") Integer zip,
 			@RequestParam(value = "city", required = false, defaultValue = "_") String city,
@@ -61,7 +61,7 @@ public class RestaurantFilterController {
 			}),
 			@ApiResponse(responseCode = "204", description = "Request has invalid parameters", content = @Content)
 	})
-	@PostMapping(value="")
+	@PostMapping(value="/restaurant")
 	public ResponseEntity<List<RestaurantDTO>> filterResults(@Valid @RequestBody List<RestaurantDTO> results,
 			@RequestParam(value = "zip-code", required = false, defaultValue = "0") Integer zip,
 			@RequestParam(value = "city", required = false, defaultValue = "_") String city,

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,7 +40,7 @@ public class SearchController {
 			}),
 			@ApiResponse(responseCode = "400", description = "Request has invalid parameters", content = @Content)
 	})
-	@RequestMapping(path = "/food", method = RequestMethod.GET)
+	@GetMapping(path = "/food")
 	@ResponseBody
 	public ResponseEntity<?> foodSearch(
 			@RequestParam(value = "query") String query, 
@@ -90,7 +91,7 @@ public class SearchController {
 			}),
 			@ApiResponse(responseCode = "400", description = "Request has invalid parameters", content = @Content)
 	})
-	@RequestMapping(path = "/food/{food-id}", method = RequestMethod.GET)
+	@GetMapping(path = "/food/{food-id}")
 	@ResponseBody
 	public ResponseEntity<?> foodId(@PathVariable(value = "food-id") String foodId) {
 
@@ -118,7 +119,7 @@ public class SearchController {
 			}),
 			@ApiResponse(responseCode = "400", description = "Request has invalid parameters", content = @Content)
 	})
-	@RequestMapping(path = "/restaurant", method = RequestMethod.GET)
+	@GetMapping(path = "/restaurant")
 	@ResponseBody
 	public ResponseEntity<?> restaurantSearch(
 			@RequestParam(value = "query") String query, 
