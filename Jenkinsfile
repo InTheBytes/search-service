@@ -46,8 +46,10 @@ pipeline {
             }
         }
         stage('Deploy') {
-            echo 'Updating k8s image..'
-            sh './kubectl set image deployment/search-service search-service=241465518750.dkr.ecr.us-east-2.amazonaws.com/searchservice:latest'
+            steps {
+                echo 'Updating k8s image..'
+                sh './kubectl set image deployment/search-service search-service=241465518750.dkr.ecr.us-east-2.amazonaws.com/searchservice:latest'
+            }
         }
     }
     post {
