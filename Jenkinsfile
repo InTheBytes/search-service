@@ -47,8 +47,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo 'Updating k8s image..'
-                sh '~/kubectl set image deployment/search-service search-service=241465518750.dkr.ecr.us-east-2.amazonaws.com/searchservice:latest'
+                echo 'Deploying cloudformation..'
+                sh "aws cloudformation deploy --stack-name StackLunchSearchService --template-file ./ecs.yaml --parameter-overrides ApplicationName=SearchService ApplicationEnvironment=dev ECRRepositoryUri=241465518750.dkr.ecr.us-east-2.amazonaws.com/searchservice:latest --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM --region us-east-2"
             }
         }
     }
