@@ -30,8 +30,7 @@ public class FoodDTO {
 	private String description;
 	
 	@Nullable
-	@JsonIgnore
-	private RestaurantDTO restaurant;
+	private String restaurantId;
 
 	public String getFoodId() {
 		return foodId;
@@ -65,12 +64,12 @@ public class FoodDTO {
 		this.description = description;
 	}
 
-	public RestaurantDTO getRestaurant() {
-		return restaurant;
+	public String getRestaurantId() {
+		return restaurantId;
 	}
 
-	public void setRestaurant(RestaurantDTO restaurant) {
-		this.restaurant = restaurant;
+	public void setRestaurantId(String restaurantId) {
+		this.restaurantId = restaurantId;
 	}
 
 	@Override

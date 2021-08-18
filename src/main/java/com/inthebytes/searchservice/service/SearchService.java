@@ -34,11 +34,16 @@ public class SearchService {
 
 	public Page<FoodDTO> foodSearch(String query, String sort, String[] filter, Boolean ascending, Integer pageNumber) throws SQLException {
 		return foodRepo.findByNameContaining(query, PageRequest.of(pageNumber, 10, Sort.by((ascending)? Sort.Direction.ASC : Sort.Direction.DESC, sort)))
-				.map((x) -> mapper.convert(x));
+				.map((x) -> {
+					x.setRestaurant(restaurantRepo.findByFoods(x));
+					return mapper.convert(x);
+					});
 	}
 
 	public FoodDTO foodById(String foodId) throws SQLException {
-		return mapper.convert(foodRepo.findByFoodId(foodId));
+		Food food = foodRepo.findByFoodId(foodId);
+		food.setRestaurant(restaurantRepo.findByFoods(food));
+		return mapper.convert(food);
 	}
 
 	public Page<RestaurantDTO> restaurantSearch(String query, String sort, String[] filter, Boolean ascending, Integer pageNumber) throws SQLException {
