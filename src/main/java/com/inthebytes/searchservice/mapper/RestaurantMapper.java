@@ -29,7 +29,7 @@ public class RestaurantMapper {
 		List<FoodDTO> foods = new ArrayList<FoodDTO>();
 		for (Food food : entity.getFoods()) {
 			FoodDTO f = convert(food);
-			f.setRestaurant(dto);
+			f.setRestaurantId(dto.getRestaurantId());
 			foods.add(f);
 		}
 		dto.setFoods(foods);
@@ -58,6 +58,9 @@ public class RestaurantMapper {
 				entity.getDescription());
 		
 		dto.setFoodId(entity.getFoodId());
+		if (entity.getRestaurant() != null) {
+			dto.setRestaurantId(entity.getRestaurant().getRestaurantId());	
+		}
 		
 		return dto;
 	}

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import com.inthebytes.searchservice.entity.Food;
 import com.inthebytes.searchservice.entity.Restaurant;
 
 import java.util.List;
@@ -14,5 +15,6 @@ import java.util.List;
 public interface RestaurantDao extends JpaRepository<Restaurant, String>, JpaSpecificationExecutor<Restaurant> {
 	Restaurant findByRestaurantId(String id);
 	Restaurant findByName(String name);
+	Restaurant findByFoods(Food food);
 	Page<Restaurant> findByNameContaining(String query, Pageable pageable);
 }
