@@ -1,5 +1,7 @@
 package com.inthebytes.searchservice.exception;
 
+import java.sql.SQLException;
+
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,12 @@ public class GlobalControllerAdvice {
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseEntity<String> handleBadParams(MissingServletRequestParameterException ex) {
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(SQLException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<String> handleSqlException(SQLException ex) {
 		return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 

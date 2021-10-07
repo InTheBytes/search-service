@@ -1,7 +1,5 @@
 package com.inthebytes.searchservice.service;
 
-import java.sql.SQLException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,19 +21,19 @@ public class SearchService {
 	@Autowired
 	RestaurantDao restaurantRepo;
 
-	public Page<FoodDto> foodSearch(String query, String sort, Boolean ascending, Integer pageNumber) throws SQLException {
+	public Page<FoodDto> foodSearch(String query, String sort, Boolean ascending, Integer pageNumber) {
 		return FoodDto.convert(
 				foodRepo.findByNameContaining(query, PageRequest.of(pageNumber, 10, Sort.by((ascending)? Sort.Direction.ASC : Sort.Direction.DESC, sort)))
 				);
 	}
 
-	public FoodDto foodById(String foodId) throws SQLException {
+	public FoodDto foodById(String foodId) {
 		Food food = foodRepo.findByFoodId(foodId);
 		food.setRestaurant(restaurantRepo.findByFoods(food));
 		return FoodDto.convert(food);
 	}
 
-	public Page<RestaurantDto> restaurantSearch(String query, String sort, Boolean ascending, Integer pageNumber) throws SQLException {
+	public Page<RestaurantDto> restaurantSearch(String query, String sort, Boolean ascending, Integer pageNumber) {
 		return RestaurantDto.convert(
 				restaurantRepo.findByNameContaining(query, PageRequest.of(pageNumber, 10, Sort.by((ascending)? Sort.Direction.ASC : Sort.Direction.DESC, sort)))
 				);

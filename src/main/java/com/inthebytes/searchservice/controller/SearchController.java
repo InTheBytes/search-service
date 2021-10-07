@@ -1,10 +1,7 @@
 package com.inthebytes.searchservice.controller;
 
-import java.sql.SQLException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +28,16 @@ public class SearchController {
 
 	@Autowired
 	SearchService service;
+	
+	private final String sortingCriteria = "price";
+	
+	private Integer checkPageNumber(Integer pageNumber) {
+		return (pageNumber < 0) ? 0 : pageNumber; 
+	}
+	
+	private Boolean sortByPriceAscending(String sortOption) {
+		return !sortOption.equals("high");
+	}
 
 	@Operation(summary = "Search for food with query", description = "", tags = { "search" })
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
@@ -39,43 +46,11 @@ public class SearchController {
 			@ApiResponse(responseCode = "400", description = "Request has invalid parameters", content = @Content) })
 	@GetMapping(path = "/food")
 	@ResponseBody
-	public ResponseEntity<?> foodSearch(@RequestParam(value = "query") String query,
+	public ResponseEntity<Page<FoodDto>> foodSearch(@RequestParam(value = "query") String query,
 			@RequestParam(value = "sort", required = false, defaultValue = "low") String sortOption,
-			@RequestParam(value = "page", required = false, defaultValue = "0") String pageNumber) {
-
-		Page<FoodDto> result;
-		ResponseEntity<?> response;
-
-		try {
-			Integer page = Integer.parseInt(pageNumber) - 1;
-			if (page < 0) {
-				page = 0;
-			}
-
-			Boolean direction;
-			String sort = "";
-
-			switch (sortOption) {
-			case "high":
-				sort = "price";
-				direction = false;
-				break;
-			case "low":
-			default:
-				sort = "price";
-				direction = true;
-			}
-
-			result = service.foodSearch(query, sort, direction, page);
-			response = new ResponseEntity<>(result, HttpStatus.OK);
-		} catch (NumberFormatException e) {
-			return new ResponseEntity<>("Page must be a number", HttpStatus.BAD_REQUEST);
-		} catch (SQLException e) {
-			response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			e.printStackTrace();
-		}
-
-		return response;
+			@RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber) {
+		
+		return ResponseEntity.ok(service.foodSearch(query, sortingCriteria, sortByPriceAscending(sortOption), checkPageNumber(pageNumber)));
 	}
 
 	@Operation(summary = "Search for food by ID", description = "", tags = { "search" })
@@ -86,22 +61,10 @@ public class SearchController {
 			@ApiResponse(responseCode = "400", description = "Request has invalid parameters", content = @Content) })
 	@GetMapping(path = "/food/{food-id}")
 	@ResponseBody
-	public ResponseEntity<?> foodId(@PathVariable(value = "food-id") String foodId) {
+	public ResponseEntity<FoodDto> foodId(@PathVariable(value = "food-id") String foodId) {
 
-		FoodDto result;
-		ResponseEntity<?> response;
+		return ResponseEntity.ok().body(service.foodById(foodId));
 
-		try {
-			result = service.foodById(foodId);
-			response = new ResponseEntity<>(result, HttpStatus.OK);
-		} catch (NumberFormatException e) {
-			return new ResponseEntity<>("Page must be a number", HttpStatus.BAD_REQUEST);
-		} catch (SQLException e) {
-			response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			e.printStackTrace();
-		}
-
-		return response;
 	}
 
 	@Operation(summary = "Search for restaurant by query", description = "", tags = { "search" })
@@ -111,28 +74,10 @@ public class SearchController {
 			@ApiResponse(responseCode = "400", description = "Request has invalid parameters", content = @Content) })
 	@GetMapping(path = "/restaurant")
 	@ResponseBody
-	public ResponseEntity<?> restaurantSearch(@RequestParam(value = "query") String query,
+	public ResponseEntity<Page<RestaurantDto>> restaurantSearch(@RequestParam(value = "query") String query,
 			@RequestParam(value = "sort", required = false, defaultValue = "low") String sortOption,
-			@RequestParam(value = "page", required = false, defaultValue = "0") String pageNumber) {
+			@RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber) {
 
-		Page<RestaurantDto> result;
-		ResponseEntity<?> response;
-
-		try {
-			Integer page = Integer.parseInt(pageNumber) - 1;
-			if (page < 0) {
-				page = 0;
-			}
-
-			result = service.restaurantSearch(query, "name", true, page);
-			response = new ResponseEntity<>(result, HttpStatus.OK);
-		} catch (NumberFormatException e) {
-			return new ResponseEntity<>("Page must be a number", HttpStatus.BAD_REQUEST);
-		} catch (SQLException e) {
-			response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			e.printStackTrace();
-		}
-
-		return response;
+		return ResponseEntity.ok(service.restaurantSearch(query, "name", true, checkPageNumber(pageNumber)));
 	}
 }
