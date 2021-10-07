@@ -1,29 +1,18 @@
 package com.inthebytes.searchservice;
 
-import org.springframework.boot.SpringApplication;
+import javax.annotation.Generated;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import com.inthebytes.stacklunch.StackLunchApplication;
 
 @SpringBootApplication
+@EnableJpaRepositories
 public class SearchServiceApplication {
 
+	@Generated(value = { "" })
 	public static void main(String[] args) {
-		SpringApplication.run(SearchServiceApplication.class, args);
+		StackLunchApplication.run(SearchServiceApplication.class, args);
 	}
-
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-						.allowedOriginPatterns("https://*.stacklunch.com", "https://stacklunch.com")
-						.allowCredentials(true)
-						.allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH");
-			}
-		};
-	}
-
 }

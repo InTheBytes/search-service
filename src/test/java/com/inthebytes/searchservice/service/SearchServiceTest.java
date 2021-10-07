@@ -5,29 +5,24 @@ import static org.mockito.Mockito.when;
 
 import java.sql.SQLException;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.inthebytes.searchservice.dao.FoodDao;
 import com.inthebytes.searchservice.dao.RestaurantDao;
-import com.inthebytes.searchservice.dto.FoodDTO;
-import com.inthebytes.searchservice.dto.RestaurantDTO;
-import com.inthebytes.searchservice.entity.Food;
-import com.inthebytes.searchservice.entity.Restaurant;
-import com.inthebytes.searchservice.mapper.RestaurantMapper;
+import com.inthebytes.stacklunch.data.food.Food;
+import com.inthebytes.stacklunch.data.food.FoodDto;
+import com.inthebytes.stacklunch.data.restaurant.Restaurant;
+import com.inthebytes.stacklunch.data.restaurant.RestaurantDto;
 
-@RunWith(SpringRunner.class)
-@TestInstance(Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 public class SearchServiceTest {
 
 	@Mock
@@ -36,34 +31,25 @@ public class SearchServiceTest {
 	@Mock
 	RestaurantDao restaurantRepo;
 	
-	@Mock
-	RestaurantMapper mapper;
-	
+	@Autowired
 	@InjectMocks
 	SearchService service;
-	
-	@BeforeAll
-	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-	}
 	
 	@Test
 	public void foodSearchTest() throws SQLException {
 		Page<Food> page = Page.empty();
-		Page<FoodDTO> result = Page.empty();
-		String[] filter = new String[1];
+		Page<FoodDto> result = Page.empty();
 		when(foodRepo.findByNameContaining("", PageRequest.of(1, 10, Sort.by(Sort.Direction.ASC, "low")))).thenReturn(page);
 		
-		assertThat(service.foodSearch("", "low", filter, true, 1)).isEqualTo(result);
+		assertThat(service.foodSearch("", "low", true, 1)).isEqualTo(result);
 	}
 	
 	@Test
 	public void restaurantSearchTest() throws SQLException {
 		Page<Restaurant> page = Page.empty();
-		Page<RestaurantDTO> result = Page.empty();
-		String[] filter = new String[1];
+		Page<RestaurantDto> result = Page.empty();
 		when(restaurantRepo.findByNameContaining("", PageRequest.of(1, 10, Sort.by(Sort.Direction.ASC, "low")))).thenReturn(page);
 		
-		assertThat(service.restaurantSearch("", "low", filter, true, 1)).isEqualTo(result);
+		assertThat(service.restaurantSearch("", "low", true, 1)).isEqualTo(result);
 	}
 }

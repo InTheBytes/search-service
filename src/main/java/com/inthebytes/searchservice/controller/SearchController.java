@@ -2,12 +2,6 @@ package com.inthebytes.searchservice.controller;
 
 import java.sql.SQLException;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -15,14 +9,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.inthebytes.searchservice.dto.FoodDTO;
-import com.inthebytes.searchservice.dto.RestaurantDTO;
 import com.inthebytes.searchservice.service.SearchService;
+import com.inthebytes.stacklunch.data.food.FoodDto;
+import com.inthebytes.stacklunch.data.restaurant.RestaurantDto;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/search")
@@ -33,22 +33,17 @@ public class SearchController {
 	SearchService service;
 
 	@Operation(summary = "Search for food with query", description = "", tags = { "search" })
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "successful operation", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = FoodDTO.class, type = "Page List")),
-					@Content(mediaType = "application/xml", schema = @Schema(implementation = FoodDTO.class, type = "Page List"))
-			}),
-			@ApiResponse(responseCode = "400", description = "Request has invalid parameters", content = @Content)
-	})
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = FoodDto.class, type = "Page List")),
+			@Content(mediaType = "application/xml", schema = @Schema(implementation = FoodDto.class, type = "Page List")) }),
+			@ApiResponse(responseCode = "400", description = "Request has invalid parameters", content = @Content) })
 	@GetMapping(path = "/food")
 	@ResponseBody
-	public ResponseEntity<?> foodSearch(
-			@RequestParam(value = "query") String query, 
-			@RequestParam(value = "sort", required = false, defaultValue = "low") String sortOption, 
-			@RequestParam(value = "filter", required = false, defaultValue = "") String[] filters, 
+	public ResponseEntity<?> foodSearch(@RequestParam(value = "query") String query,
+			@RequestParam(value = "sort", required = false, defaultValue = "low") String sortOption,
 			@RequestParam(value = "page", required = false, defaultValue = "0") String pageNumber) {
-		
-		Page<FoodDTO> result;
+
+		Page<FoodDto> result;
 		ResponseEntity<?> response;
 
 		try {
@@ -61,17 +56,17 @@ public class SearchController {
 			String sort = "";
 
 			switch (sortOption) {
-				case "high":
-					sort = "price";
-					direction = false;
-					break;
-				case "low":
-				default:
-					sort = "price";
-					direction = true;
+			case "high":
+				sort = "price";
+				direction = false;
+				break;
+			case "low":
+			default:
+				sort = "price";
+				direction = true;
 			}
 
-			result = service.foodSearch(query, sort, filters, direction, page);
+			result = service.foodSearch(query, sort, direction, page);
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (NumberFormatException e) {
 			return new ResponseEntity<>("Page must be a number", HttpStatus.BAD_REQUEST);
@@ -86,16 +81,14 @@ public class SearchController {
 	@Operation(summary = "Search for food by ID", description = "", tags = { "search" })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = FoodDTO.class)),
-					@Content(mediaType = "application/xml", schema = @Schema(implementation = FoodDTO.class))
-			}),
-			@ApiResponse(responseCode = "400", description = "Request has invalid parameters", content = @Content)
-	})
+					@Content(mediaType = "application/json", schema = @Schema(implementation = FoodDto.class)),
+					@Content(mediaType = "application/xml", schema = @Schema(implementation = FoodDto.class)) }),
+			@ApiResponse(responseCode = "400", description = "Request has invalid parameters", content = @Content) })
 	@GetMapping(path = "/food/{food-id}")
 	@ResponseBody
 	public ResponseEntity<?> foodId(@PathVariable(value = "food-id") String foodId) {
 
-		FoodDTO result;
+		FoodDto result;
 		ResponseEntity<?> response;
 
 		try {
@@ -112,22 +105,17 @@ public class SearchController {
 	}
 
 	@Operation(summary = "Search for restaurant by query", description = "", tags = { "search" })
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "successful operation", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDTO.class, type = "Page List")),
-					@Content(mediaType = "application/xml", schema = @Schema(implementation = RestaurantDTO.class, type = "Page List"))
-			}),
-			@ApiResponse(responseCode = "400", description = "Request has invalid parameters", content = @Content)
-	})
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDto.class, type = "Page List")),
+			@Content(mediaType = "application/xml", schema = @Schema(implementation = RestaurantDto.class, type = "Page List")) }),
+			@ApiResponse(responseCode = "400", description = "Request has invalid parameters", content = @Content) })
 	@GetMapping(path = "/restaurant")
 	@ResponseBody
-	public ResponseEntity<?> restaurantSearch(
-			@RequestParam(value = "query") String query, 
-			@RequestParam(value = "sort", required = false, defaultValue = "low") String sortOption, 
-			@RequestParam(value = "filter", required = false, defaultValue = "") String[] filters, 
+	public ResponseEntity<?> restaurantSearch(@RequestParam(value = "query") String query,
+			@RequestParam(value = "sort", required = false, defaultValue = "low") String sortOption,
 			@RequestParam(value = "page", required = false, defaultValue = "0") String pageNumber) {
-		
-		Page<RestaurantDTO> result;
+
+		Page<RestaurantDto> result;
 		ResponseEntity<?> response;
 
 		try {
@@ -136,7 +124,7 @@ public class SearchController {
 				page = 0;
 			}
 
-			result = service.restaurantSearch(query, "name", filters, true, page);
+			result = service.restaurantSearch(query, "name", true, page);
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (NumberFormatException e) {
 			return new ResponseEntity<>("Page must be a number", HttpStatus.BAD_REQUEST);

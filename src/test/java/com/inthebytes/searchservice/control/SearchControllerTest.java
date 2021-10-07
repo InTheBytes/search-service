@@ -4,25 +4,26 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import com.inthebytes.searchservice.SearchServiceTestConfig;
 import com.inthebytes.searchservice.controller.SearchController;
-import com.inthebytes.searchservice.dto.FoodDTO;
-import com.inthebytes.searchservice.dto.RestaurantDTO;
 import com.inthebytes.searchservice.service.SearchService;
+import com.inthebytes.stacklunch.data.food.FoodDto;
+import com.inthebytes.stacklunch.data.restaurant.RestaurantDto;
 
-@WebMvcTest(SearchController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK,
+		classes = {SearchServiceTestConfig.class, SearchController.class})
 @AutoConfigureMockMvc
+@EnableAutoConfiguration
 public class SearchControllerTest {
 	
 	@MockBean
@@ -31,14 +32,13 @@ public class SearchControllerTest {
 	@Autowired
 	MockMvc mock;
 	
-	private Page<RestaurantDTO> restaurantPage = Page.empty();
-	private Page<FoodDTO> foodPage = Page.empty();
+	private Page<RestaurantDto> restaurantPage = Page.empty();
+	private Page<FoodDto> foodPage = Page.empty();
 	
 	
 	@Test
 	public void foodSearchTest() throws Exception {
-		String[] filter = new String[1];
-		when(service.foodSearch("s", "price", filter, false, 1)).thenReturn(foodPage);
+		when(service.foodSearch("s", "price", false, 1)).thenReturn(foodPage);
 		
 		mock.perform(get("/search/food")
 		        .param("query","s")
@@ -49,8 +49,7 @@ public class SearchControllerTest {
 	
 	@Test
 	public void foodNoParamsTest() throws Exception {
-		String[] filter = new String[1];
-		when(service.foodSearch("s", "price", filter, true, 0)).thenReturn(foodPage);
+		when(service.foodSearch("s", "price", true, 0)).thenReturn(foodPage);
 		
 		mock.perform(get("/search/food")
 		        .param("query","s"))
@@ -67,8 +66,7 @@ public class SearchControllerTest {
 	
 	@Test
 	public void restaurantSearchTest() throws Exception {
-		String[] filter = new String[1];
-		when(service.restaurantSearch("s", "name", filter, true, 1)).thenReturn(restaurantPage);
+		when(service.restaurantSearch("s", "name", true, 1)).thenReturn(restaurantPage);
 		
 		mock.perform(get("/search/restaurant")
 		        .param("query","s")
@@ -78,8 +76,7 @@ public class SearchControllerTest {
 
 	@Test
 	public void restaurantSearchNoParamsTest() throws Exception {
-		String[] filter = new String[1];
-		when(service.restaurantSearch("s", "name", filter, true, 0)).thenReturn(restaurantPage);
+		when(service.restaurantSearch("s", "name", true, 0)).thenReturn(restaurantPage);
 		
 		mock.perform(get("/search/restaurant")
 		        .param("query","s"))
